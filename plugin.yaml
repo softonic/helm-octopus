@@ -1,0 +1,7 @@
+name: "octopus"
+version: "0.0.0-dev"
+usage: "Choose value files from subcharts"
+description: |-
+  This plugin provides access to subcharts value files
+useTunnel: false
+command: "$HELM_PLUGIN_DIR/octopus"
