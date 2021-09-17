@@ -10,10 +10,29 @@ import (
 	"os/exec"
 )
 
+func getEnvOrFail(env string) string {
+	envVar := os.Getenv(env)
+	log.Fatal("Something is wrong... env var %s not defined.", env)
+	return envVar
+}
+
+const DEFAULT_TMP_DIR = "/tmp/octopus/"
+
 func main() {
+	helmBin := getEnvOrFail("HELM_BIN")
+	pluginName := getEnvOrFail("HELM_PLUGIN_NAME")
+	tmpDir := os.Getenv("HELM_OCTOPUS_TMP_DIR")
+	if tmpDir == "" {
+		tmpDir = DEFAULT_TMP_DIR
+	}
+
 	plugin := ""
 	flag.StringVar(&plugin, "plugin", "", "Use defined plugin. Defaults to none")
 	flag.Parse()
+	// avoid infinite recursion
+	if plugin == pluginName {
+		plugin = ""
+	}
 	args := flag.Args()
 
 	chartBasePath, err := octopus.GetChartPathFromArgs(args)
@@ -30,7 +49,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error while parsing args: %v\n", err)
 	}
-	tarHandler := octopus.NewTarHandler("/tmp/octopus/")
+	tarHandler := octopus.NewTarHandler(tmpDir)
 
 	copiedFiles, err := tarHandler.CreateTmpFiles(subchartValues)
 	if err != nil {
@@ -40,7 +59,7 @@ func main() {
 	if plugin != "" {
 		helmArgs = append([]string{plugin}, helmArgs...)
 	}
-	c := exec.Command("helm", helmArgs...)
+	c := exec.Command(helmBin, helmArgs...)
 
 	var out bytes.Buffer
 	var stderr bytes.Buffer
