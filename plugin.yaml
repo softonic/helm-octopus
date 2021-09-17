@@ -5,3 +5,6 @@ description: |-
   This plugin provides access to subcharts value files
 useTunnel: false
 command: "$HELM_PLUGIN_DIR/octopus"
+hooks:
+  install: "$HELM_PLUGIN_DIR/scripts/install"
+  update: "$HELM_PLUGIN_DIR/scripts/install"
