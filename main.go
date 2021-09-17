@@ -12,7 +12,9 @@ import (
 
 func getEnvOrFail(env string) string {
 	envVar := os.Getenv(env)
-	log.Fatal("Something is wrong... env var %s not defined.", env)
+	if envVar == "" {
+		log.Fatalf("Something is wrong... env var %s not defined.", env)
+	}
 	return envVar
 }
 
