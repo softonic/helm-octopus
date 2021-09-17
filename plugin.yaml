@@ -4,7 +4,7 @@ usage: "Choose value files from subcharts"
 description: |-
   This plugin provides access to subcharts value files
 useTunnel: false
-command: "$HELM_PLUGIN_DIR/octopus"
+command: "$HELM_PLUGIN_DIR/bin/octopus"
 hooks:
   install: "$HELM_PLUGIN_DIR/scripts/install"
   update: "$HELM_PLUGIN_DIR/scripts/install"
