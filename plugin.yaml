@@ -1,5 +1,5 @@
 name: "octopus"
-version: "0.1.2"
+version: "0.2.0"
 usage: "Choose value files from subcharts"
 description: |-
   This plugin provides access to subcharts value files
