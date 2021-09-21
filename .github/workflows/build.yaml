@@ -17,7 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Set version
-        run: echo "VERSION=${ GITHUB_REF#refs/*/ }" >> $GITHUB_ENV
+        run: echo "VERSION=${{ github.event.release.tag_name }} >> $GITHUB_ENV
       - name: Build
         run: make dist
       - name: Upload the artifacts
