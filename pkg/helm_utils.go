@@ -5,12 +5,26 @@ import (
 	"strings"
 )
 
+// IsValidSubcommand Checks whether subcommand is supported by octopus
+func IsValidSubcommand(args []string) bool {
+	var subcommands = []string{"upgrade", "install", "template", "lint"}
+	firstArg := args[0]
+	for _, subcommand := range subcommands {
+		if firstArg == subcommand {
+			return true
+		}
+	}
+	return false
+}
+
+// GetChartPathFromArgs Finds the chart's path from the argument list and ensures it exists
 func GetChartPathFromArgs(args []string) (string, error) {
 	path := findChartPathFromArgs(args)
 	_, err := isDirectory(path)
 	return path, err
 }
 
+// SwapHelmArgs Swaps arguments matching copied file source with copied file destination
 func SwapHelmArgs(args []string, copiedFiles []CopiedFile) []string {
 	helmArgs := []string{}
 	for _, arg := range args {
@@ -29,8 +43,17 @@ func SwapHelmArgs(args []string, copiedFiles []CopiedFile) []string {
 	return helmArgs
 }
 
-func findChartPathFromArgs(args []string) string {
+func isNoArgOption(opt string) bool {
+	optsNoArg := []string{"--install"}
+	for _, optNoArg := range optsNoArg {
+		if opt == optNoArg {
+			return true
+		}
+	}
+	return false
+}
 
+func findChartPathFromArgs(args []string) string {
 	i := 0
 	c := 0
 	skip := 0
@@ -49,8 +72,8 @@ func findChartPathFromArgs(args []string) string {
 		}
 		// if argument is option...
 		if strings.HasPrefix(arg, "-") {
-			// if contains equals, then no need to skip next
-			if !strings.Contains(arg, "=") {
+			// if contains equals or is a no-argument option, then no need to skip next
+			if !strings.Contains(arg, "=") && !isNoArgOption(arg) {
 				skip++
 			}
 		} else {
