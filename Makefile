@@ -13,4 +13,4 @@ dist:
 	tar -C build/ -zcvf $(CURDIR)/release/helm-octopus-macos-$(VERSION).tgz octopus/
 	rm build/octopus/bin/octopus
 	GOOS=windows GOARCH=amd64 go build -o build/octopus/bin/octopus.exe -trimpath
-	tar -C build/ -zcvf $(CURDIR)/release/helm-octopus-windows-$(VERSION).tgz diff/
+	tar -C build/ -zcvf $(CURDIR)/release/helm-octopus-windows-$(VERSION).tgz octopus/
