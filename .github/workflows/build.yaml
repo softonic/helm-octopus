@@ -26,4 +26,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           releaseId: ${{ env.VERSION }}
-          args: '/home/riccardo/src/helm-octopus/release/helm-octopus*.tgz'
+          args: 'release/helm-octopus*.tgz'
